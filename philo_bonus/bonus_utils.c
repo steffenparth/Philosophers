@@ -6,7 +6,7 @@
 /*   By: sparth <sparth@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 12:29:15 by sparth            #+#    #+#             */
-/*   Updated: 2024/03/15 18:55:45 by sparth           ###   ########.fr       */
+/*   Updated: 2024/03/16 00:39:02 by sparth           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,31 @@ void	time2(int time, t_input *data, int philo_id)
 	while (1)
 	{
 		current_time = get_time();
+		sem_wait(data->sem_print);
+		if (data->finished == true)
+		{
+			sem_post(data->sem_print);
+			// sem_post(data->sem_finish);
+			usleep (50);
+			clean_process(data);
+			exit (1);
+		}
 		if (current_time - data->last_meal >= data->time2die)
 		{
-			sem_wait(data->sem_print);
-			printf("%ld %d died1\n", current_time - data->init_time, philo_id);
+			
+			printf("%ld %d \033[31mdied\033[0m\n", current_time - data->init_time, philo_id);
+			sem_post(data->sem_print);
 			sem_post(data->sem_finish);
-			return ;
+			usleep (50);
+			clean_process(data);
+			exit (1);
 		}
 		if ((current_time - temp) >= time)
+		{
+			sem_post(data->sem_print);
 			break ;
+		}
+		sem_post(data->sem_print);
 		usleep(50);
 	}
 }
@@ -51,14 +67,13 @@ void	print_func(char *status, t_input *data, int philo_id)
 	if (data->finished == true)
 	{
 		sem_post(data->sem_print);
-		sem_post(data->sem_finish);
-		// pthread_join(data->thread, NULL);
+		// sem_post(data->sem_finish);
 		clean_process(data);
 		exit (1);
 	}
 	if (current_time - data->last_meal >= data->time2die)
 	{
-		printf("%ld %d died2\n", current_time - data->init_time, philo_id);
+		printf("%ld %d \033[31mdied\033[0m\n", current_time - data->init_time, philo_id);
 		sem_post(data->sem_print);
 		sem_post(data->sem_finish);
 		// pthread_join(data->thread, NULL);

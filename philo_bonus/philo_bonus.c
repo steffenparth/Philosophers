@@ -6,7 +6,7 @@
 /*   By: sparth <sparth@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 18:58:25 by sparth            #+#    #+#             */
-/*   Updated: 2024/03/15 19:23:02 by sparth           ###   ########.fr       */
+/*   Updated: 2024/03/16 00:54:38 by sparth           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	eating(t_input *data, int philo_id)
 	if (sem_wait(data->forks) == -1)
 		cleanup(data);
 	print_func("has taken a fork", data, philo_id);
-	print_func("\x1b[31mis eating\x1b[0m", data, philo_id);
+	print_func("\x1b[32mis eating\x1b[0m", data, philo_id);
 	data->last_meal = get_time();
 	time2(data->time2eat, data, philo_id);
 	if (sem_post(data->forks) == -1)
@@ -35,7 +35,7 @@ void	eating(t_input *data, int philo_id)
 
 void	sleeping(t_input *data, int philo_id)
 {
-	print_func("\x1b[32mis sleeping\x1b[0m", data, philo_id);
+	print_func("\x1b[36mis sleeping\x1b[0m", data, philo_id);
 	time2(data->time2sleep, data, philo_id);
 }
 
@@ -43,7 +43,7 @@ void	thinking(t_input *data, int philo_id)
 {
 	int	temp;
 
-	print_func("\x1b[33mis thinking\x1b[0m", data, philo_id);
+	print_func("\x1b[34mis thinking\x1b[0m", data, philo_id);
 	if (data->nbr_of_philos % 2 != 0)
 	{
 		temp = data->time2eat * 2 - data->time2sleep;
@@ -71,10 +71,19 @@ void	*set_end(void *arg)
 	return (NULL);
 }
 
+void	pre_routine(t_input *data, int philo_id)
+{
+	if (philo_id % 2 == 0)
+		time2(data->time2eat, data, philo_id);
+	if (philo_id % 2 != 0 && data->nbr_of_philos == philo_id)
+		time2(data->time2eat * 2, data, philo_id);
+}
+
 void	routine(t_input	*data, int philo_id)
 {
 	pthread_create(&data->thread, NULL, &set_end, data);
 	pthread_detach(data->thread);
+	pre_routine(data, philo_id);
 	while (data->meals2eat--)
 	{
 		eating(data, philo_id);
