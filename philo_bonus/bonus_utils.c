@@ -6,7 +6,7 @@
 /*   By: sparth <sparth@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 12:29:15 by sparth            #+#    #+#             */
-/*   Updated: 2024/03/13 21:27:55 by sparth           ###   ########.fr       */
+/*   Updated: 2024/03/15 01:29:44 by sparth           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	time2(int time, t_input *data, int philo_id)
 	while (1)
 	{
 		current_time = get_time();
-		if (current_time - data->time_alive >= data->time2die)
+		if (current_time - data->last_meal >= data->time2die)
 		{
 			sem_wait(data->sem_print);
 			printf("%ld %d died1\n", current_time - data->init_time, philo_id);
@@ -38,28 +38,25 @@ void	time2(int time, t_input *data, int philo_id)
 		}
 		if ((current_time - temp) >= time)
 			break ;
-
 		usleep(50);
 	}
 }
 
 void	print_func(char *status, t_input *data, int philo_id)
 {
-	long current_time;
-	
+	long	current_time;
+
 	sem_wait(data->sem_print);
 	current_time = get_time();
-	if (current_time - data->time_alive >= data->time2die)
+	if (current_time - data->last_meal >= data->time2die)
 	{
 		printf("%ld %d died2\n", current_time - data->init_time, philo_id);
 		sem_post(data->sem_finish);
 		return ;
-		// free_return(data, 0, 0, philo_id);
 	}
 	else
 		printf("%ld %d %s\n", current_time - data->init_time, philo_id, status);
 	sem_post(data->sem_print);
-	
 }
 
 int	ft_atoi(const char *str)

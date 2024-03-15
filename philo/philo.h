@@ -6,7 +6,7 @@
 /*   By: sparth <sparth@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 12:41:04 by sparth            #+#    #+#             */
-/*   Updated: 2024/03/11 18:35:24 by sparth           ###   ########.fr       */
+/*   Updated: 2024/03/15 01:25:18 by sparth           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ typedef struct s_philo
 	t_input	*data;
 }			t_philo;
 
-typedef struct s_input {
+typedef struct s_input
+{
 	int				philo_nbr;
 	int				time2die;
 	int				time2eat;

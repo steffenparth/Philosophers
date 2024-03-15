@@ -5,7 +5,7 @@ CC = cc
 CFLAGS = -Wall -Werror -Wextra 
 # -g -fsanitize=thread
 
-SRC = philo_bonus.c bonus_utils.c
+SRC = philo_bonus.c bonus_utils.c bonus_cleanup.c bonus_prep.c
 
 OBJ = $(SRC:.c=.o)
 

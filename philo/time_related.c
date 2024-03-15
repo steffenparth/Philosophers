@@ -6,7 +6,7 @@
 /*   By: sparth <sparth@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 01:37:26 by sparth            #+#    #+#             */
-/*   Updated: 2024/03/11 18:49:39 by sparth           ###   ########.fr       */
+/*   Updated: 2024/03/15 00:50:58 by sparth           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ bool	thinking(t_philo *phil)
 {
 	int	temp;
 
-	if (!print_func("is thinking", phil))
+	if (!print_func("\x1b[33mis thinking\x1b[0m", phil))
 		return (0);
 	if (phil->data->philo_nbr % 2 != 0)
 	{
@@ -83,7 +83,7 @@ bool	eating(t_philo *phil)
 		if (!fork_locking(phil, phil->right_fork, phil->left_fork))
 			return (0);
 	}
-	if (!print_func("is eating", phil))
+	if (!print_func("\x1b[31mis eating\x1b[0m", phil))
 	{
 		pthread_mutex_unlock(&phil->data->forks[phil->right_fork]);
 		pthread_mutex_unlock(&phil->data->forks[phil->left_fork]);
@@ -101,7 +101,7 @@ bool	eating(t_philo *phil)
 
 bool	sleeping(t_philo *phil)
 {
-	if (!print_func("is sleeping", phil))
+	if (!print_func("\x1b[32mis sleeping\x1b[0m", phil))
 		return (0);
 	time2(phil->data->time2sleep);
 	return (1);
