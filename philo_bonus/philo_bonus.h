@@ -6,7 +6,7 @@
 /*   By: sparth <sparth@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 18:59:07 by sparth            #+#    #+#             */
-/*   Updated: 2024/03/15 01:32:20 by sparth           ###   ########.fr       */
+/*   Updated: 2024/03/15 19:22:35 by sparth           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,16 @@ typedef struct s_input
 	int				time2eat;
 	int				time2sleep;
 	int				meals2eat;
+	bool			finished;
 	long			init_time;
 	long			last_meal;
-	pid_t			*pids;
+	pid_t			pids[200];
 	sem_t			*forks;
 	sem_t			*sem_limit;
 	sem_t			*sem_print;
 	sem_t			*sem_finish;
-	pthread_t		*thread;
+	// sem_t			*sem_check;
+	pthread_t		thread;
 }					t_input;
 
 void	time2(int time, t_input *data, int philo_id);
@@ -52,3 +54,10 @@ void	init_struct(int argc, char *argv[], t_input *data);
 void	preperation(int argc, char *argv[], t_input *data);
 sem_t	*sem_creating(t_input *data, char *sem_name, int sem_nbr);
 void	create_processes(t_input *data);
+void	eating(t_input *data, int philo_id);
+void	sleeping(t_input *data, int philo_id);
+void	thinking(t_input *data, int philo_id);
+void	routine(t_input	*data, int philo_id);
+void	clean_process(t_input *data);
+void	*set_end(void *arg);
+

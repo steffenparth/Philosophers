@@ -6,7 +6,7 @@
 /*   By: sparth <sparth@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 12:29:15 by sparth            #+#    #+#             */
-/*   Updated: 2024/03/15 01:29:44 by sparth           ###   ########.fr       */
+/*   Updated: 2024/03/15 18:55:45 by sparth           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,22 @@ void	print_func(char *status, t_input *data, int philo_id)
 
 	sem_wait(data->sem_print);
 	current_time = get_time();
+	if (data->finished == true)
+	{
+		sem_post(data->sem_print);
+		sem_post(data->sem_finish);
+		// pthread_join(data->thread, NULL);
+		clean_process(data);
+		exit (1);
+	}
 	if (current_time - data->last_meal >= data->time2die)
 	{
 		printf("%ld %d died2\n", current_time - data->init_time, philo_id);
+		sem_post(data->sem_print);
 		sem_post(data->sem_finish);
-		return ;
+		// pthread_join(data->thread, NULL);
+		clean_process(data);
+		exit (1);
 	}
 	else
 		printf("%ld %d %s\n", current_time - data->init_time, philo_id, status);

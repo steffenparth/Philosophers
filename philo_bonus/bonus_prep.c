@@ -6,7 +6,7 @@
 /*   By: sparth <sparth@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 01:07:30 by sparth            #+#    #+#             */
-/*   Updated: 2024/03/15 01:32:39 by sparth           ###   ########.fr       */
+/*   Updated: 2024/03/15 19:05:39 by sparth           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	create_processes(t_input *data)
 	pid_t	pid;
 	int		i;
 
-	data->pids = (pid_t *)malloc(sizeof(pid_t) * data->nbr_of_philos);
-	if (!data->pids)
-		cleanup(data);
+	// data->pids = (pid_t *)malloc(sizeof(pid_t) * data->nbr_of_philos);
+	// if (!data->pids)
+	// 	cleanup(data);
 	i = 0;
 	while (i < data->nbr_of_philos)
 	{
@@ -32,11 +32,12 @@ void	create_processes(t_input *data)
 			data->pids[i] = pid;
 		i++;
 	}
-	sem_wait(data->sem_finish);
+	// sem_wait(data->sem_finish);
 	i = 0;
-	while (i < data->nbr_of_philos)
-		kill(data->pids[i++], SIGTERM);
-	i = 0;
+	// while (i < data->nbr_of_philos)
+	// 	kill(data->pids[i++], SIGTERM);
+	// sleep (5);
+	// i = 0;
 	while (i < data->nbr_of_philos)
 		waitpid(data->pids[i++], NULL, 0);
 }
@@ -74,10 +75,14 @@ bool	check_input(int argc, char *argv[])
 
 void	init_struct(int argc, char *argv[], t_input *data)
 {
-	data->pids = NULL;
+	// data->pids = NULL;
 	data->nbr_of_philos = ft_atoi(argv[1]);
 	if (data->nbr_of_philos > 200 || data->nbr_of_philos < 2)
+	{
 		cleanup(data);
+		printf("nbr of philos min. 2 & max. 200\n");
+		exit (1);
+	}
 	data->time2die = ft_atoi(argv[2]);
 	data->time2eat = ft_atoi(argv[3]);
 	data->time2sleep = ft_atoi(argv[4]);
@@ -89,6 +94,8 @@ void	init_struct(int argc, char *argv[], t_input *data)
 	data->sem_limit = sem_creating(data, "limit", data->nbr_of_philos / 2);
 	data->sem_print = sem_creating(data, "print", 1);
 	data->sem_finish = sem_creating(data, "finish", 0);
+	// data->sem_check = sem_creating(data, "check", 1);
+	data->finished = false;
 	data->init_time = get_time();
 	data->last_meal = data->init_time;
 }
