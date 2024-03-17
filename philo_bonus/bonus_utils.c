@@ -6,7 +6,7 @@
 /*   By: sparth <sparth@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 12:29:15 by sparth            #+#    #+#             */
-/*   Updated: 2024/03/16 00:39:02 by sparth           ###   ########.fr       */
+/*   Updated: 2024/03/17 01:15:08 by sparth           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,32 +28,20 @@ void	time2(int time, t_input *data, int philo_id)
 	temp = get_time();
 	while (1)
 	{
+		sem_wait(data->sem_if_finished);
 		current_time = get_time();
-		sem_wait(data->sem_print);
 		if (data->finished == true)
-		{
-			sem_post(data->sem_print);
-			// sem_post(data->sem_finish);
-			usleep (50);
-			clean_process(data);
-			exit (1);
-		}
+			clean_exit(data, 1, philo_id, current_time);
+		sem_post(data->sem_if_finished);
+		sem_wait(data->sem_print);
 		if (current_time - data->last_meal >= data->time2die)
-		{
-			
-			printf("%ld %d \033[31mdied\033[0m\n", current_time - data->init_time, philo_id);
-			sem_post(data->sem_print);
-			sem_post(data->sem_finish);
-			usleep (50);
-			clean_process(data);
-			exit (1);
-		}
+			clean_exit(data, 2, philo_id, current_time);
+		sem_post(data->sem_print);
 		if ((current_time - temp) >= time)
 		{
 			sem_post(data->sem_print);
 			break ;
 		}
-		sem_post(data->sem_print);
 		usleep(50);
 	}
 }
@@ -62,24 +50,14 @@ void	print_func(char *status, t_input *data, int philo_id)
 {
 	long	current_time;
 
-	sem_wait(data->sem_print);
 	current_time = get_time();
+	sem_wait(data->sem_if_finished);
 	if (data->finished == true)
-	{
-		sem_post(data->sem_print);
-		// sem_post(data->sem_finish);
-		clean_process(data);
-		exit (1);
-	}
+		clean_exit(data, 1, philo_id, current_time);
+	sem_post(data->sem_if_finished);
+	sem_wait(data->sem_print);
 	if (current_time - data->last_meal >= data->time2die)
-	{
-		printf("%ld %d \033[31mdied\033[0m\n", current_time - data->init_time, philo_id);
-		sem_post(data->sem_print);
-		sem_post(data->sem_finish);
-		// pthread_join(data->thread, NULL);
-		clean_process(data);
-		exit (1);
-	}
+		clean_exit(data, 2, philo_id, current_time);
 	else
 		printf("%ld %d %s\n", current_time - data->init_time, philo_id, status);
 	sem_post(data->sem_print);

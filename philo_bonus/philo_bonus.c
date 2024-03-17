@@ -6,7 +6,7 @@
 /*   By: sparth <sparth@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 18:58:25 by sparth            #+#    #+#             */
-/*   Updated: 2024/03/16 00:54:38 by sparth           ###   ########.fr       */
+/*   Updated: 2024/03/17 01:15:49 by sparth           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,31 +58,9 @@ void	thinking(t_input *data, int philo_id)
 	}
 }
 
-void	*set_end(void *arg)
-{
-	t_input *data;
-
-	data = (t_input *)arg;
-	sem_wait(data->sem_finish);
-	sem_post(data->sem_finish);
-	sem_wait(data->sem_print);
-	data->finished = true;
-	sem_post(data->sem_print);
-	return (NULL);
-}
-
-void	pre_routine(t_input *data, int philo_id)
-{
-	if (philo_id % 2 == 0)
-		time2(data->time2eat, data, philo_id);
-	if (philo_id % 2 != 0 && data->nbr_of_philos == philo_id)
-		time2(data->time2eat * 2, data, philo_id);
-}
-
 void	routine(t_input	*data, int philo_id)
 {
 	pthread_create(&data->thread, NULL, &set_end, data);
-	pthread_detach(data->thread);
 	pre_routine(data, philo_id);
 	while (data->meals2eat--)
 	{
@@ -91,7 +69,7 @@ void	routine(t_input	*data, int philo_id)
 		thinking(data, philo_id);
 	}
 	sem_post(data->sem_finish);
-	usleep(50);
+	pthread_join(data->thread, NULL);
 	clean_process(data);
 	exit (0);
 }

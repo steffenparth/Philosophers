@@ -2,10 +2,10 @@ NAME = philo_bonus
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra 
+CFLAGS = -Wall -Werror -Wextra
 # -g -fsanitize=thread
 
-SRC = philo_bonus.c bonus_utils.c bonus_cleanup.c bonus_prep.c
+SRC = philo_bonus.c bonus_utils.c bonus_cleanup.c bonus_prep.c bonus_utils2.c
 
 OBJ = $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: sparth <sparth@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 17:57:26 by sparth            #+#    #+#             */
-/*   Updated: 2024/03/15 19:23:09 by sparth           ###   ########.fr       */
+/*   Updated: 2024/03/17 00:06:12 by sparth           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	cleanup(t_input *data)
 		sem_closing(data->sem_print, "print");
 	if (data->sem_finish != SEM_FAILED)
 		sem_closing(data->sem_finish, "finish");
-	// if (data->pids)
-	// 	free(data->pids);
+	if (data->sem_if_finished != SEM_FAILED)
+		sem_closing(data->sem_if_finished, "if_finished");
 	if (data)
 		free(data);
 }
@@ -68,6 +68,7 @@ void	ctrl_c_clean(void)
 	sem_unlink("limit");
 	sem_unlink("print");
 	sem_unlink("finish");
+	sem_unlink("if_finished");
 }
 
 void	clean_process(t_input *data)
@@ -76,6 +77,7 @@ void	clean_process(t_input *data)
 	sem_close(data->sem_limit);
 	sem_close(data->sem_print);
 	sem_close(data->sem_finish);
+	sem_close(data->sem_if_finished);
 	free (data);
-	// data = NULL;
+	data = NULL;
 }
