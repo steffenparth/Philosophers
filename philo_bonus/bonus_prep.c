@@ -6,7 +6,7 @@
 /*   By: sparth <sparth@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 01:07:30 by sparth            #+#    #+#             */
-/*   Updated: 2024/03/17 00:10:59 by sparth           ###   ########.fr       */
+/*   Updated: 2024/03/17 04:06:14 by sparth           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,20 @@ void	create_processes(t_input *data)
 
 void	preperation(int argc, char *argv[], t_input *data)
 {
-	init_struct(argc, argv, data);
 	if (argc < 5 || argc > 6)
-		cleanup(data);
+	{
+		printf("input: nbr_of_philos time2live(ms) time2eat(ms) "
+			"time2sleep(ms) meals2eat(optional)\n");
+		free(data);
+		exit (1);
+	}
 	if (!check_input(argc, argv))
-		cleanup(data);
+	{
+		printf("only positive numbers allowed\n");
+		free(data);
+		exit (1);
+	}
+	init_struct(argc, argv, data);
 }
 
 bool	check_input(int argc, char *argv[])
@@ -70,7 +79,7 @@ void	init_struct(int argc, char *argv[], t_input *data)
 	data->nbr_of_philos = ft_atoi(argv[1]);
 	if (data->nbr_of_philos > 200 || data->nbr_of_philos < 2)
 	{
-		cleanup(data);
+		free(data);
 		printf("nbr of philos min. 2 & max. 200\n");
 		exit (1);
 	}

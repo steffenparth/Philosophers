@@ -6,7 +6,7 @@
 /*   By: sparth <sparth@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 18:59:07 by sparth            #+#    #+#             */
-/*   Updated: 2024/03/17 01:16:22 by sparth           ###   ########.fr       */
+/*   Updated: 2024/03/17 02:36:50 by sparth           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,5 @@ void	thinking(t_input *data, int philo_id);
 void	routine(t_input	*data, int philo_id);
 void	clean_process(t_input *data);
 void	*set_end(void *arg);
-void	clean_exit(t_input *data, int flag, int philo_id, long current_time);
+void	clean_exit(t_input *data, int flag, int philo_id);
 void	pre_routine(t_input *data, int philo_id);

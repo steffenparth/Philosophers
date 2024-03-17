@@ -6,7 +6,7 @@
 /*   By: sparth <sparth@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 18:58:25 by sparth            #+#    #+#             */
-/*   Updated: 2024/03/17 01:15:49 by sparth           ###   ########.fr       */
+/*   Updated: 2024/03/17 02:32:47 by sparth           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,9 @@ void	thinking(t_input *data, int philo_id)
 
 void	routine(t_input	*data, int philo_id)
 {
+	int	i;
+
+	i = 0;
 	pthread_create(&data->thread, NULL, &set_end, data);
 	pre_routine(data, philo_id);
 	while (data->meals2eat--)
@@ -68,7 +71,8 @@ void	routine(t_input	*data, int philo_id)
 		sleeping(data, philo_id);
 		thinking(data, philo_id);
 	}
-	sem_post(data->sem_finish);
+	while (i++ < data->nbr_of_philos)
+		sem_post(data->sem_finish);
 	pthread_join(data->thread, NULL);
 	clean_process(data);
 	exit (0);

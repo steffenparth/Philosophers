@@ -6,7 +6,7 @@
 /*   By: sparth <sparth@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 12:29:15 by sparth            #+#    #+#             */
-/*   Updated: 2024/03/17 01:15:08 by sparth           ###   ########.fr       */
+/*   Updated: 2024/03/17 03:16:30 by sparth           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ void	time2(int time, t_input *data, int philo_id)
 		sem_wait(data->sem_if_finished);
 		current_time = get_time();
 		if (data->finished == true)
-			clean_exit(data, 1, philo_id, current_time);
+			clean_exit(data, 1, philo_id);
 		sem_post(data->sem_if_finished);
 		sem_wait(data->sem_print);
 		if (current_time - data->last_meal >= data->time2die)
-			clean_exit(data, 2, philo_id, current_time);
+			clean_exit(data, 2, philo_id);
 		sem_post(data->sem_print);
 		if ((current_time - temp) >= time)
 		{
@@ -50,16 +50,22 @@ void	print_func(char *status, t_input *data, int philo_id)
 {
 	long	current_time;
 
-	current_time = get_time();
 	sem_wait(data->sem_if_finished);
+	current_time = get_time();
 	if (data->finished == true)
-		clean_exit(data, 1, philo_id, current_time);
+		clean_exit(data, 1, philo_id);
 	sem_post(data->sem_if_finished);
 	sem_wait(data->sem_print);
 	if (current_time - data->last_meal >= data->time2die)
-		clean_exit(data, 2, philo_id, current_time);
+		clean_exit(data, 2, philo_id);
 	else
-		printf("%ld %d %s\n", current_time - data->init_time, philo_id, status);
+	{
+		sem_wait(data->sem_if_finished);
+		if (data->finished != true)
+			printf("%ld %d %s\n", current_time
+				- data->init_time, philo_id, status);
+		sem_post(data->sem_if_finished);
+	}
 	sem_post(data->sem_print);
 }
 
