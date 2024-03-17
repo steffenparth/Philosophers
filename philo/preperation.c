@@ -6,7 +6,7 @@
 /*   By: sparth <sparth@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 00:38:23 by sparth            #+#    #+#             */
-/*   Updated: 2024/03/15 00:10:12 by sparth           ###   ########.fr       */
+/*   Updated: 2024/03/17 04:34:17 by sparth           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	preperation(int argc, char *argv[], t_input *data)
 	if (argc < 5 || argc > 6)
 		return (free_return(data, 6, 0, 2));
 	if (!check_input(argc, argv))
-		return (free_return(data, false, 0, 2));
+		return (free_return(data, 9, 0, 2));
 	data->thread = malloc(sizeof(pthread_t) * (data->philo_nbr + 1));
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->philo_nbr);
 	if (!data->thread || !data->forks)
@@ -55,7 +55,7 @@ bool	init_struct(int argc, char *argv[], t_input *data)
 	if (pthread_mutex_init(&data->food, NULL) != 0)
 		return (free_return(data, false, 1, 1));
 	data->philo_nbr = ft_atoi(argv[1]);
-	if (data->philo_nbr > 200)
+	if (data->philo_nbr > 200 || data->philo_nbr < 1)
 		return (free_return(data, 5, 0, 2));
 	data->time2die = ft_atoi(argv[2]);
 	data->time2eat = ft_atoi(argv[3]);

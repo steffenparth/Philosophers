@@ -6,7 +6,7 @@
 /*   By: sparth <sparth@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 18:43:07 by sparth            #+#    #+#             */
-/*   Updated: 2024/03/11 18:45:57 by sparth           ###   ########.fr       */
+/*   Updated: 2024/03/17 04:34:55 by sparth           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	error_message(int errnum, t_input *data)
 	if (errnum == 4)
 		printf("pthread_join failed\n");
 	if (errnum == 5)
-		printf("Max Philos = 200\n");
+		printf("philo nbr: 1 - 200\n");
 	if (errnum == 6)
 		printf("input: nbr_of_philos time2live(ms) time2eat(ms) "
 			"time2sleep(ms) meals2eat(optional)\n");
@@ -36,6 +36,8 @@ bool	error_message(int errnum, t_input *data)
 		pthread_mutex_unlock(&data->death_lock);
 		printf("Thread Mutex failed!\n");
 	}
+	if (errnum == 9)
+		printf("only positive numbers allowed!\n");
 	return (0);
 }
 

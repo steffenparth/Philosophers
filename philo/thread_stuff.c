@@ -6,7 +6,7 @@
 /*   By: sparth <sparth@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 01:45:38 by sparth            #+#    #+#             */
-/*   Updated: 2024/03/11 18:50:12 by sparth           ###   ########.fr       */
+/*   Updated: 2024/03/17 03:38:11 by sparth           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ bool	death_food_handeling(t_input *data, int i)
 {
 	if (pthread_mutex_lock(&data->death_lock) != 0)
 		return (error_message(8, data));
-	if (get_time() - data->philo[i].death_count == data->time2die)
+	if (get_time() - data->philo[i].death_count >= data->time2die)
 	{
 		data->is_dead = 1;
 		printf("%ld %d died\n", get_time()
@@ -53,6 +53,7 @@ void	*observation(void *arg)
 				return (NULL);
 			i++;
 		}
+		usleep (50);
 	}
 	return (NULL);
 }
